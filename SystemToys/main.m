@@ -1,4 +1,5 @@
 #import <ApplicationServices/ApplicationServices.h>
+#import <Foundation/Foundation.h>
 
 #define SIGN(x) (((x) > 0) - ((x) < 0))
 #define LINES 3
@@ -20,6 +21,10 @@ int main(void)
     CFRunLoopSourceRef runLoopSource;
 
     eventTap = CGEventTapCreate(kCGSessionEventTap, kCGHeadInsertEventTap, 0, 1 << kCGEventScrollWheel, cgEventCallback, NULL);
+    if (!eventTap) {
+        NSLog(@"CGEventTapCreate(): NULL");
+        return 1;
+    }
     runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
 
     CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes);
